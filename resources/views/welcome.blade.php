@@ -319,6 +319,7 @@
                 @endif
 
                 <div class="links">
+
                     @if ($cupboard->count() > 0)
                         <div class='vending-machine'>
                             <main class='frame'>

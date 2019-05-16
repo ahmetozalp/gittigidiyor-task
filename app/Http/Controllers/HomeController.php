@@ -10,13 +10,12 @@
 		 * Cola Machine Status
 		 */
 		public function index(){
-			$cuppboard = Cupboard::with("rack")->first();
+			$cuppboards = Cupboard::with("rack")->first();
 
-			$data = array();
-			$data["door"] 		= Cupboard::first();
-			$data["cupboard"] 	= $cuppboard->rack;
+			$door 		= Cupboard::first();
+			$cupboard 	= $cuppboards->rack;
 
-			return view('welcome', $data);
+			return view('welcome', compact('door', 'cupboard'));
 		}
 
 		/**
@@ -28,10 +27,12 @@
 			 try {
 				if(count($request->all()) > 1 AND $request->get("id") !== null){
 					//dd($request->all());
+					/*
 					$Cupboard = Rack::where("id", $request->get("id"))->with("cupboard")->first();
 					if($Cupboard->cupboard->cover == 1){
 						return redirect()->route('home')->with('error', __('Kapak Acik Birakilmis.'));
 					}
+					*/
 
 					if($request->get("open")) {
 						$openStatus = $request->get("open") == 2 ? 2 : 1;

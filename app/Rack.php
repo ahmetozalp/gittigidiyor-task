@@ -34,4 +34,8 @@ class Rack extends Model
 		return $this->hasOne('App\Cupboard', 'id', 'cupboard_id');
 		//return $this->hasMany(Cupboard::class);
 	}
+
+	public function Product(){
+	    return $this->hasMany(Product::class);
+    }
 }

@@ -27,6 +27,6 @@ class Cupboard extends Model
 	 */
 	public function Rack()
 	{
-		return $this->hasMany(Rack::class);
+		return $this->hasMany(Rack::class)->with('product');
 	}
 }
