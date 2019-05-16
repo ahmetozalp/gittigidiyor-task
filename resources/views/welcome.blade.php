@@ -129,7 +129,7 @@
                 z-index: 1000;
             }
             .row {
-                height: 20%;
+                height: 15%;
                 width: 100%;
                 border-bottom: 0.3em black solid;
             }
@@ -294,9 +294,10 @@
             <div class="content">
                 <div class="title m-b-md">
                     Meşrubat Dolabı Durumu:
-                    @if ($cupboard->sum("quantity") === 0)
+
+                    @if ($total === 0)
                         tamamen boş
-                    @elseif ($cupboard->sum("quantity") === $cupboard->sum("max_quantity"))
+                    @elseif ($total === $cupboard->sum("max_quantity"))
                         tamamen dolu
                     @else
                         kısmen dolu
@@ -325,6 +326,11 @@
                             <main class='frame'>
                                 <div class='window'>
                                     @foreach ($cupboard as $cupboards)
+                                        @if ($cupboards->product->sum('type') === $cupboards->max_quantity)
+                                            Raf Dolu
+                                        @else
+                                            {{ $cupboards->product->sum('type') }}/{{ $cupboards->max_quantity }}
+                                        @endif
                                         <div class='row'>
                                             <div class='can'>
                                                 <div class='text'>cola</div>
@@ -346,25 +352,31 @@
                                             </div>
                                         </div>
                                         <br><span>
-                                            @if ($cupboards->quantity === $cupboards->max_quantity)
-                                                Raf Dolu
-                                            @else
-                                                {{ $cupboards->quantity }}/{{ $cupboards->max_quantity }}
-                                            @endif
+
                                             @if ($door->cover === 1)
-                                                    @if ($cupboards->quantity < 20)
+                                                    @if ($cupboards->product->sum('type') < 20)
                                                         <a href="/operation?up=1&id={{ $cupboards->id }}" class="btn btn-success"><i class="fas fa-sort-up"></i></a>
                                                     @endif
-                                                    @if ($cupboards->quantity > 0)
+                                                    @if ($cupboards->product->sum('type') > 0)
                                                         <a href="/operation?down=1&id={{ $cupboards->id }}" class="btn btn-danger"><i class="fas fa-sort-down"></i></a>
                                                     @endif
                                             @else
-                                                    @if ($cupboards->quantity < 20)
+                                                    33cl
+                                                    @if ($cupboards->product->sum('type') < 20)
                                                         <a href="/operation?up=1&id={{ $cupboards->id }}" class="btn btn-success"><i class="fas fa-sort-up"></i></a>
                                                     @endif
-                                                    @if ($cupboards->quantity > 0)
+                                                    @if ($cupboards->product->sum('type') > 0)
                                                         <a href="/operation?down=1&id={{ $cupboards->id }}" class="btn btn-danger"><i class="fas fa-sort-down"></i></a>
                                                     @endif
+
+                                                    50cl
+                                                    @if ($cupboards->product->sum('type') < 20)
+                                                        <a href="/operation?up=2&id={{ $cupboards->id }}" class="btn btn-success"><i class="fas fa-sort-up"></i></a>
+                                                    @endif
+                                                    @if ($cupboards->product->sum('type') > 0)
+                                                        <a href="/operation?down=2&id={{ $cupboards->id }}" class="btn btn-danger"><i class="fas fa-sort-down"></i></a>
+                                                    @endif
+
                                             @endif
                                         </span><br><br>
                                     @endforeach
@@ -380,7 +392,7 @@
                                         <a href="/operation?open=1&id={{ $door->id }}" class="btn btn-danger">Kapak Ac</a>
                                     @endif
                                     <div class='display'>
-                                        {{ $cupboard->sum("quantity") }}
+                                        {{ $total }}
                                     </div>
                                     <div class='input'></div>
                                     <div class='output'></div>

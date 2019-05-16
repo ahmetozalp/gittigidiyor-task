@@ -15,7 +15,15 @@
 			$door 		= Cupboard::first();
 			$cupboard 	= $cuppboards->rack;
 
-			return view('welcome', compact('door', 'cupboard'));
+            $total = $cupboard->sum(function($value) {
+                $total = 0;
+                foreach($value->product as $product){
+                    $total = $total+$product->type;
+                }
+                return $total;
+            });
+
+			return view('welcome', compact('door', 'cupboard', 'total'));
 		}
 
 		/**
@@ -41,12 +49,14 @@
 					if($request->get("up")){
 						$this->openCase(1, $request->get("id"));
 
-						return $this->up($request->get("id"));
+						$type = $request->get("up") == 2  ? 2 : 1;
+						return $this->up($request->get("id"), $type);
 					}
 					if($request->get("down")){
 						$this->openCase(1, $request->get("id"));
 
-						return $this->down($request->get("id"));
+                        $type = $request->get("down") == 2 ? 2 : 1;
+						return $this->down($request->get("id"), $type);
 					}
 
 					return redirect()->route('home')->with('error', __('Tanimsiz.'));
@@ -86,14 +96,18 @@
 		 *
 		 * @return \Illuminate\Http\RedirectResponse
 		 */
-		static function up($id){
+		static function up($id, $type){
 			$Rack = Rack::where("id", $id)->first();
+
 			if($Rack->count() > 0){
-				if($Rack->quantity >= 20){
+				if($Rack->product->sum('type')+$type > 20){
 					return redirect()->route('home')->with('error', __('Raf Dolu!'));
 				}
-				$Rack->quantity = $Rack->quantity+1;
-				$Rack->save();
+
+                $Rack->product()->create([
+                    'type' => $type
+                ]);
+
 				return redirect()->route('home')->with('error', __('Raf\'a Icecek Yerlestirildi!'));
 			}else {
 				return redirect()->route('home')->with('error', __('Raf Bulunamadi!'));
@@ -107,14 +121,18 @@
 		 *
 		 * @return \Illuminate\Http\RedirectResponse
 		 */
-		static function down($id){
+		static function down($id, $type){
 			$Rack = Rack::where("id", $id)->first();
 			if($Rack->count() > 0){
-				if($Rack->quantity <= 0){
+				if($Rack->product->sum('type')-$type < 0){
 					return redirect()->route('home')->with('error', __('Raf Bos!'));
 				}
-				$Rack->quantity = $Rack->quantity-1;
-				$Rack->save();
+
+				if($Rack->product()->where("type", $type)->count() === 0){
+                    return redirect()->route('home')->with('error', __('Raf\'da Bu tip içecek bulunamadı!'));
+                }
+
+				$Rack->product()->where("type", $type)->first()->delete();
 				return redirect()->route('home')->with('error', __('Raf\'a Icecek Alindi!!'));
 			}else {
 				return redirect()->route('home')->with('error', __('Raf Bulunamadi!'));
