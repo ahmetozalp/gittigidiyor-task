@@ -1,8 +1,9 @@
+
 Kullanılan Framework: Laravel
 
 
 --
-OOP Dizayn
+**OOP Dizayn**
 
 Ön bilgi: Nesne tabanlı dil kullanılmalıdır (PHP veya Java).
 
@@ -15,11 +16,20 @@ Dolabın kapısı açık ya da kapalı olabilir.
 Dolap tamamen boş, kısmen dolu veya tamamen dolu durumlarından birinde olabilir.
 Dolabın boş alan kontrolünü yapabilmesi ve dolduğunda daha fazla kutu eklenememesi gerekmektedir.
 
+-- 
+**2.  Mail**
 
--- Kurulumu
 
-git clone git@github.com:ahmetozalp/gittigidiyor-task.git
-cd gittigidiyor-task && composer install
-.env dosyasında veritabanını bilgileri degiştirilicek
-veritabanı clone edilen git reposunun içinde mevcuttur.
+Dolap 33cl ve 50cl olarak iki çeşit içecek alacak şekilde dizaynı değiştiriniz.
+Her raf 20 adet 33cl veya 10 adet 50cl alabilir. Raf kapasitesini aşmamak kaydı ile 33cl ve 50cl karışık da alabilir. (Örneğin 5 adet 50cl ve 10 adet 33cl birlikte tek bir rafa tam sığmaktadır.)
+
+
+
+
+**-- Kurulumu**
+
+    git clone git@github.com:ahmetozalp/gittigidiyor-task.git
+    cd gittigidiyor-task && composer install
+    .env dosyasında veritabanını bilgileri degiştirilicek
+    veritabanı clone edilen git reposunun içinde mevcuttur.
 
